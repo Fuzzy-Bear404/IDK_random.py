@@ -2,17 +2,14 @@ import os
 import time
 import threading
 
-# --- Konfigurasjon ---
 FILE_SIZE_MB = 1000
 SOURCE_FILE = "testfile.dat"
 
-# Sett disse til faktiske steder på din maskin:
 HDD_PATH = "/Volumes/Untitled/ssd_test.dat"
 SSD_PATH = "/Volumes/Lenovo PS8/hdd_test.dat"
 
 
 def generate_random_file(filename, size_mb):
-    """Lager en fil på gitt størrelse (MB) med tilfeldige data."""
     print(f"Lager testfil på {size_mb} MB...")
     with open(filename, "wb") as f:
         for _ in range(size_mb):
@@ -21,8 +18,7 @@ def generate_random_file(filename, size_mb):
 
 
 def copy_file(src, dst, label, results):
-    """Kopierer filen og måler tid."""
-    os.makedirs(os.path.dirname(dst), exist_ok=True)  # lag mappe hvis ikke finnes
+    os.makedirs(os.path.dirname(dst), exist_ok=True)  
 
     start_time = time.time()
     with open(src, "rb") as fsrc, open(dst, "wb") as fdst:
@@ -34,7 +30,6 @@ def copy_file(src, dst, label, results):
 
 
 def cleanup(files):
-    """Sletter filer etter bruk."""
     for f in files:
         try:
             if os.path.exists(f):
@@ -44,7 +39,6 @@ def cleanup(files):
 
 
 def main():
-    # Lag testfil
     generate_random_file(SOURCE_FILE, FILE_SIZE_MB)
 
     results = {}
@@ -58,7 +52,7 @@ def main():
     t1.join()
     t2.join()
 
-    print("\n--- Resultater ---")
+    print("\n--- result ---")
     if "SSD" in results:
         print(f"SSD tid: {results['SSD']:.2f} sekunder")
     if "HDD" in results:
@@ -68,7 +62,6 @@ def main():
         total = max(results["SSD"], results["HDD"])
         print(f"Total tid brukt (parallelt): {total:.2f} sekunder")
 
-    # Rydd opp
     cleanup([SOURCE_FILE, SSD_PATH, HDD_PATH])
 
 
